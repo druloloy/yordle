@@ -94,24 +94,46 @@ export async function createWord(fingerprint: string) {
   return session.word;
 }
 
+/**
+ * Gets the list of tries for the given fingerprint
+ * @param fingerprint The fingerprint identifying the user
+ * @returns An array of tries, or an empty array if none are found
+ */
+
 export async function getTries(fingerprint: string) {
   await connectToDatabase();
   const session: Sessions | null = await Session.findOne({ fingerprint });
   return session?.tries || [];
 }
 
+/**
+ * Checks if the wordle puzzle is solved for the given fingerprint.
+ * @param fingerprint The fingerprint identifying the user
+ * @returns A boolean indicating whether the puzzle is solved
+ */
 export async function checkIsSolved(fingerprint: string) {
   await connectToDatabase();
   const session: Sessions | null = await Session.findOne({ fingerprint });
   return session?.solved || false;
 }
 
+/**
+ * Retrieves the current word associated with the given fingerprint.
+ * @param fingerprint The fingerprint identifying the user
+ * @returns A string representing the current word, or an empty string if none is found
+ */
 export async function getCurrentWord(fingerprint: string) {
   await connectToDatabase();
+
   const session: Sessions | null = await Session.findOne({ fingerprint });
   return session?.word || '';
 }
 
+/**
+ * Retrieves the current streak associated with the given fingerprint.
+ * @param fingerprint The fingerprint identifying the user
+ * @returns The current streak value, or 0 if none is found
+ */
 export async function getCurrentStreak(fingerprint: string) {
   await connectToDatabase();
   const session: Sessions | null = await Session.findOne({ fingerprint });
