@@ -2,6 +2,7 @@
 import Session, { Sessions } from '@/database/models/Session';
 import { WordBank, Yordle } from 'yordle';
 import dayjs from 'dayjs';
+import connectToDatabase from '@/database';
 
 /**
  * Verifies a given word against the user's current wordle
@@ -10,6 +11,7 @@ import dayjs from 'dayjs';
  * @returns An object with the result of the verification and a boolean indicating whether the user has solved the wordle
  */
 export async function verifyWord(word: string, fingerprint: string) {
+  await connectToDatabase();
   const session: Sessions | null = await Session.findOne({ fingerprint });
 
   if (!session) {
@@ -54,6 +56,7 @@ export async function verifyWord(word: string, fingerprint: string) {
  * @returns The new word
  */
 export async function createWord(fingerprint: string) {
+  await connectToDatabase();
   const session: Sessions | null = await Session.findOne({ fingerprint });
 
   if (!session) {
@@ -92,21 +95,25 @@ export async function createWord(fingerprint: string) {
 }
 
 export async function getTries(fingerprint: string) {
+  await connectToDatabase();
   const session: Sessions | null = await Session.findOne({ fingerprint });
   return session?.tries || [];
 }
 
 export async function checkIsSolved(fingerprint: string) {
+  await connectToDatabase();
   const session: Sessions | null = await Session.findOne({ fingerprint });
   return session?.solved || false;
 }
 
 export async function getCurrentWord(fingerprint: string) {
+  await connectToDatabase();
   const session: Sessions | null = await Session.findOne({ fingerprint });
   return session?.word || '';
 }
 
 export async function getCurrentStreak(fingerprint: string) {
+  await connectToDatabase();
   const session: Sessions | null = await Session.findOne({ fingerprint });
   return session?.streak || 0;
 }

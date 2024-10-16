@@ -4,7 +4,6 @@ import './globals.css';
 import { ThemeProvider } from '@/app/_providers/ThemeProvider';
 import { Toaster } from './_components/atoms/toaster';
 import { AppProvider } from './_providers/AppProvider';
-import connectToDatabase from '@/database';
 import { Header } from './_components/Header';
 
 const geistSans = localFont({
@@ -28,7 +27,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  await connectToDatabase();
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
