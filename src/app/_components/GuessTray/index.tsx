@@ -1,10 +1,10 @@
 'use client';
 import { REGEXP_ONLY_CHARS } from 'input-otp';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../atoms/input-otp';
 import { cn } from '@/lib/utils';
 import { Form, FormControl, FormField, FormItem } from '../atoms/form';
-import { z } from 'zod';
+import { string, z } from 'zod';
 import { FieldError, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/app/_hooks/use-toast';
@@ -35,7 +35,7 @@ const ActiveInputOTP = () => {
       answer: '',
     },
     resolver: zodResolver(formSchema),
-    mode: 'onSubmit',
+    mode: 'all',
   });
 
   const onValid = ({ answer }: z.infer<typeof formSchema>) => {
@@ -80,14 +80,14 @@ const ActiveInputOTP = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onValid, (data) => onInvalid(data.answer))}>
+      <form onSubmit={form.handleSubmit(onValid, (data) => onInvalid(data.answer))} className="">
         <FormField
           control={form.control}
           name="answer"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <InputOTP maxLength={5} pattern={REGEXP_ONLY_CHARS} {...field}>
+                <InputOTP maxLength={5} pattern={REGEXP_ONLY_CHARS} {...field} inputMode="url">
                   <InputOTPGroup
                     className={cn(
                       '[&>*]:uppercase [&>*]:text-xl [&>div]:w-16 [&>div]:h-16 lg:[&>*]:text-2xl lg:[&>div]:w-24 lg:[&>div]:h-24 [&>div]:rounded-none [&>div]:first:rounded-l-md [&>div]:last:rounded-r-md',
@@ -95,7 +95,6 @@ const ActiveInputOTP = () => {
                         'bg-foreground/25': submitting,
                       }
                     )}
-                    autoFocus={true}
                   >
                     <InputOTPSlot index={0} />
                     <InputOTPSlot index={1} />
@@ -108,6 +107,7 @@ const ActiveInputOTP = () => {
             </FormItem>
           )}
         />
+        <button type="submit" className="hidden" />
       </form>
     </Form>
   );
