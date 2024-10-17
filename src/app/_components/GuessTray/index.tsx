@@ -1,10 +1,10 @@
 'use client';
 import { REGEXP_ONLY_CHARS } from 'input-otp';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../atoms/input-otp';
 import { cn } from '@/lib/utils';
 import { Form, FormControl, FormField, FormItem } from '../atoms/form';
-import { string, z } from 'zod';
+import { z } from 'zod';
 import { FieldError, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/app/_hooks/use-toast';
